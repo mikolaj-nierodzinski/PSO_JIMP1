@@ -12,5 +12,6 @@ typedef struct m{
 
 map* map_init(int h, int w);
 void map_free(map *map1);
+map* readfile(char *fname);
 
 #endif
