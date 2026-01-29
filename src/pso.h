@@ -26,11 +26,6 @@ typedef struct {
     pso_params_t params;
 } pso_t;
 
-typedef struct {
-    int x, y;
-} swarm_t;
-
-
 pso_t *psoCreate(int numParticles, int maxIteration, int logFrequency, pso_params_t params);
 void psoFree(pso_t *pso);
 
