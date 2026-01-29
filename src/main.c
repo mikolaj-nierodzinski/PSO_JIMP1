@@ -5,7 +5,6 @@
 #include "map.h"
 #include "pso.h"
 #include "logger.h"
-#include "utils.h"
 
 int main(int argc, char **argv) {
     srand(time(NULL));
