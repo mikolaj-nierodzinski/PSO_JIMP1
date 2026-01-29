@@ -15,7 +15,7 @@ typedef struct {
 } pso_params_t;
 
 typedef struct {
-    int numParticles, maxIterations, logFrequency;
+    int numParticles, maxIterations;
 
     int logFrequency;//how often particle positions logged
 
@@ -29,6 +29,6 @@ typedef struct {
 pso_t *psoCreate(int numParticles, int maxIteration, pso_params_t params, int logFrequency);
 void psoFree(pso_t *pso);
 
-void psoRun(pso_t *pso, const map_t *map, FILE *log);
+void psoRun(pso_t *pso, const map_t *map, FILE *Log);
 
 #endif

@@ -72,7 +72,7 @@ void psoRun(pso_t *pso, const map_t *map, FILE *Log) {
 
     for (int iter = 0; iter < pso->maxIterations; iter++) {
 	if(pso->logFrequency!=0){
-		if(iter%pso->logFrequency==0)loggerSep(iter, log);
+		if(iter%pso->logFrequency==0)loggerSep(iter, Log);
 	}
         for (int i = 0; i < pso->numParticles; i++) {
             particle_t *p = &pso->particles[i];

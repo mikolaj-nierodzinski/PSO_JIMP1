@@ -6,6 +6,6 @@ typedef struct {
 } logger_t;
 
 void loggerLog(int partId, double x, double y, FILE *log);
-void loggerSep(int iter, FILE *log);
+void loggerSep(int iter, FILE *Log);
 
 #endif
