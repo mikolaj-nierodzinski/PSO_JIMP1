@@ -20,6 +20,7 @@ pso_t *psoCreate(int numParticles, int maxIterations, pso_params_t params, int l
     pso->globalBestX = 0.0;
     pso->globalBestY = 0.0;
     pso->globalBestValue = -1e9;
+    pso->logFrequency = logFrequency;
 
     pso->particles = malloc(numParticles * sizeof(particle_t));
     if (!pso->particles) {
@@ -70,6 +71,9 @@ void psoRun(pso_t *pso, const map_t *map, FILE *log) {
 
 
     for (int iter = 0; iter < pso->maxIterations; iter++) {
+	if(pso->logFrequency!=0){
+		if(iter%pso->logFrequency==0)loggerSep(iter, log);
+	}
         for (int i = 0; i < pso->numParticles; i++) {
             particle_t *p = &pso->particles[i];
             pso_params_t params = pso->params;

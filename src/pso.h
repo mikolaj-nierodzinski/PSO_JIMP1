@@ -17,6 +17,8 @@ typedef struct {
 typedef struct {
     int numParticles, maxIterations, logFrequency;
 
+    int logFrequency;//how often particle positions logged
+
     particle_t *particles;
 
     double globalBestX, globalBestY, globalBestValue;

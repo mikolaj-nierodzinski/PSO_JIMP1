@@ -5,6 +5,7 @@ typedef struct {
     char **logs;
 } logger_t;
 
-void loggerLog(int idx);
+void loggerLog(int partId, double x, double y, FILE *log);
+void loggerSep(int iter, FILE *log);
 
 #endif
