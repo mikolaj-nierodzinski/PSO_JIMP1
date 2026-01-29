@@ -54,8 +54,10 @@ void psoRun(pso_t *pso, const map_t *map, FILE *log) {
         p->x = (double)rand() / RAND_MAX * map->width;
         p->y = (double)rand() / RAND_MAX * map->height;
 
-        p->vx = 0.0;
-        p->vy = 0.0;
+        //p->vx = 0.0;
+        //p->vy = 0.0;
+	p->vx = 1.0;
+	p->vy = 1.0;
 
         p->bestX = p->x;
         p->bestY = p->y;

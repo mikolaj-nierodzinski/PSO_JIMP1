@@ -4,7 +4,7 @@
 
 void loggerLog(int partId, double x, double y, FILE *log) {
     fprintf(log, "Particle no.; %d; ", partId);
-    fprintf(log, "x = %g; y = %g;\n", x, y);
+    fprintf(log, " %g; %g;\n", x, y);
 }
 
 void loggerSep(int iter, FILE *log){
