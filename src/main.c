@@ -30,7 +30,7 @@ int main(int argc, char **argv) {
         }
     }
 
-    double w = 0.7, c1 = 1.5, c2 = 1.5; // algorithm's default parameters
+    double w = 0.7, c1 = 1.5, c2 = 1.5, r1 = 0.7, r2 = 0.7; // algorithm's default parameters
 
     map_t *map = mapLoad(mapFile);
 
@@ -46,14 +46,14 @@ int main(int argc, char **argv) {
     if (!fiParams) {
         printf("Didn't provide algorith's parameters, default ones are used\n");
     } else {
-        fscanf(fiParams, "%lf%lf%lf", &w, &c1, &c2);
+        fscanf(fiParams, "%lf%lf%lf%lf%lf", &w, &c1, &c2, &r1, &r2);
         fclose(fiParams);
-        printf("using parameters: w = %lf, c1 = %lf, c2 = %lf\n", w, c1, c2);
+        printf("using parameters: w = %lf, c1 = %lf, c2 = %lf, r1 = %lf, r2 = %lf\n", w, c1, c2, r1, r2);
     }
 
 
     // Initialize the pso 
-    pso_params_t params = {w, c1, c2};
+    pso_params_t params = {w, c1, c2, r1, r2};
     pso_t *pso = psoCreate(numParticles, maxIterations, params, logFrequency);
 
     if (!pso) {

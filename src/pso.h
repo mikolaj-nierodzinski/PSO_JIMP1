@@ -1,6 +1,7 @@
 #ifndef _PSO_H
 #define _PSO_H
 #include "map.h"
+#include <stdio.h>
 
 typedef struct {
     double x, y; // current cordinate
@@ -14,7 +15,7 @@ typedef struct {
 } pso_params_t;
 
 typedef struct {
-    int numParticles, maxIterations;
+    int numParticles, maxIterations, logFrequency;
 
     particle_t *particles;
 
@@ -23,14 +24,9 @@ typedef struct {
     pso_params_t params;
 } pso_t;
 
-typedef struct {
-    int x, y;
-} swarm_t;
-
-
-pso_t *psoCreate(int numParticles, int maxIteration, pso_params_t params);
+pso_t *psoCreate(int numParticles, int maxIteration, pso_params_t params, int logFrequency);
 void psoFree(pso_t *pso);
 
-void psoRun(pso_t *pso, const map_t *map);
+void psoRun(pso_t *pso, const map_t *map, FILE *log);
 
 #endif
