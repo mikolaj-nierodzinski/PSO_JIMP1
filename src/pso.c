@@ -105,6 +105,7 @@ void psoRun(pso_t *pso, const map_t *map, FILE *Log) {
                 p->bestY = p->y;
             }
 
+            // log 
             if (pso->logFrequency != 0 && (iter + 1) % pso->logFrequency == 0) {
                 loggerLog(i, p->x, p->y, Log);
             }

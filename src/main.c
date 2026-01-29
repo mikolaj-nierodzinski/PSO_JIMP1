@@ -51,7 +51,6 @@ int main(int argc, char **argv) {
         printf("using parameters: w = %lf, c1 = %lf, c2 = %lf, r1 = %lf, r2 = %lf\n", w, c1, c2, r1, r2);
     }
 
-
     // Initialize the pso 
     pso_params_t params = {w, c1, c2, r1, r2};
     pso_t *pso = psoCreate(numParticles, maxIterations, params, logFrequency);
@@ -70,6 +69,4 @@ int main(int argc, char **argv) {
 
     psoFree(pso);
     mapFree(map);
-
-    return 0;
 }
