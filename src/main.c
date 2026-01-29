@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <time.h>
 #include "map.h"
 #include "pso.h"
@@ -9,13 +10,29 @@
 int main(int argc, char **argv) {
     srand(time(NULL));
 
-    int maxIterations, numParticles, n, logFrequency;
-    double w = 0.7, c1 = 1.5, c2 = 1.5; // algorithm's parameters
-    numParticles = argc > 2 ? atoi(argv[2]) : 30; // 30 is by default
-    maxIterations = argc > 3 ? atoi(argv[3]) : 100; // 100 is by default
-    logFrequency = argc > 5 ? atoi(argv[5]) : 0;
+    // default values
+    int maxIterations = 100;
+    int numParticles = 30, n;
+    int logFrequency = 0;
+    char *paramsFile = NULL;
+    char *mapFile = argv[1];
 
-    map_t *map = mapLoad(argv[1]);
+    // parse flags 
+    for (int i = 2; i < argc; i++) {
+        if (strcmp(argv[i], "-p") == 0 && i + 1 < argc ) {
+            numParticles = atoi(argv[++i]);
+        } else if(strcmp(argv[i], "-i") == 0 && i + 1 < argc) {
+            maxIterations = atoi(argv[++i]);
+        } else if(strcmp(argv[i], "-c") == 0 && i + 1 < argc) {
+            paramsFile = argv[++i];
+        } else if(strcmp(argv[i], "-n") == 0 && i + 1 < argc) {
+            logFrequency = atoi(argv[++i]);
+        }
+    }
+
+    double w = 0.7, c1 = 1.5, c2 = 1.5, r1 = 0.7, r2 = 0.7; // algorithm's default parameters
+
+    map_t *map = mapLoad(mapFile);
 
     if (!map) {
         fprintf(stderr, "cannot read map file %s\n", argv[1]);
@@ -23,26 +40,29 @@ int main(int argc, char **argv) {
     }
 
 
-    FILE *fiParams =  fopen(argv[4], "r");
-    FILE *log = fopen("log.csv", "w");
+    // read parameters from file
+    FILE *fiParams =  fopen(paramsFile, "r");
 
     if (!fiParams) {
         printf("Didn't provide algorith's parameters, default ones are used\n");
     } else {
-        fscanf(fiParams, "%lf", &w);
-        fscanf(fiParams, "%lf", &c1);
-        fscanf(fiParams, "%lf", &c2);
+        fscanf(fiParams, "%lf%lf%lf%lf%lf", &w, &c1, &c2, &r1, &r2);
         fclose(fiParams);
+        printf("using parameters: w = %lf, c1 = %lf, c2 = %lf, r1 = %lf, r2 = %lf\n", w, c1, c2, r1, r2);
     }
 
 
-    pso_params_t params = {w, c1, c2};
-    pso_t *pso = psoCreate(numParticles, maxIterations, logFrequency, params);
+    // Initialize the pso 
+    pso_params_t params = {w, c1, c2, r1, r2};
+    pso_t *pso = psoCreate(numParticles, maxIterations, params, logFrequency);
 
     if (!pso) {
         fprintf(stderr, "bad alloc at psoCreate, main\n");
         return 1;
     }
+
+    FILE *log = fopen("log.txt", "w");
+    if (!log) return 1;
 
     psoRun(pso, map, log);
 
