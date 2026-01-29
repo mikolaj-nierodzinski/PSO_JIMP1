@@ -1,17 +1,13 @@
-#include <stdio.h>
-#include <stdlib.h>
+#ifndef _MAP_H
+#define _MAP_H
 
-#ifndef MAP_H
-#define MAP_H
+typedef struct {
+    int width, height; // W and H
+    double **signal;
+} map_t;
 
-typedef struct m{
-	int h;
-	int w;
-	double **data;
-}map;
-
-map* map_init(int h, int w);
-void map_free(map *map1);
-map* readfile(char *fname);
+map_t *mapLoad(const char *fileName);
+void mapFree(map_t *map);
+double mapGetValue(const map_t *map, int row, int col);
 
 #endif
