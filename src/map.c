@@ -12,7 +12,10 @@ map_t *mapLoad(const char *fileName) {
     }
 
     int W, H;
-    fscanf(fi, "%d%d", &W, &H);
+    if(fscanf(fi, "%d%d", &W, &H)!=2){
+	    fprintf(stderr, "map height or width not type int\n");
+	    return NULL;
+    }
 
     map_t *Map = malloc(sizeof(map_t));
     if (!Map) {
@@ -38,7 +41,10 @@ map_t *mapLoad(const char *fileName) {
         }
 
         for (int j = 0; j < W; j++) {
-            fscanf(fi, "%lf", &Map->signal[i][j]);
+            if(fscanf(fi, "%lf", &Map->signal[i][j])!=1){
+		    fprintf(stderr, "map data not type double\n");
+		    return NULL;
+	    }
             // Map->signal[i][j] = rand();
         }
     }
