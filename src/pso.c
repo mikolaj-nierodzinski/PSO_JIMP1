@@ -48,7 +48,7 @@ void psoFree(pso_t *pso) {
     free(pso);
 }
 
-void psoRun(pso_t *pso, const map_t *map, FILE *log) {
+void psoRun(pso_t *pso, const map_t *map, FILE *Log) {
     for (int i = 0; i < pso->numParticles; i++) {
         particle_t *p = &pso->particles[i];
 
@@ -92,14 +92,14 @@ void psoRun(pso_t *pso, const map_t *map, FILE *log) {
             if (p->y >= (double) map->width) p->y = (double) map->width - 1e-6;
 
 
-            // evaluate fitness
             int row = (int)round(p->x);
             int col = (int)round(p->y);
             if (row < 0) row = 0;
             if (row >= map->height) row = map->height - 1;
             if (col < 0) col = 0;
             if (col >= map->width) col = map->width - 1;
-
+            
+            // evaluate fitness
             double fitness = mapGetValue(map, row, col);
 
             // update personal best
@@ -110,7 +110,7 @@ void psoRun(pso_t *pso, const map_t *map, FILE *log) {
             }
 
             if (pso->logFrequency != 0 && (iter + 1) % pso->logFrequency == 0) {
-                loggerLog(iter, i, p, log);
+                loggerLog(i, p->x, p->y, Log);
             }
         }
 
