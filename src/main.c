@@ -9,11 +9,11 @@
 int main(int argc, char **argv) {
     srand(time(NULL));
 
-    int maxIterations, numParticles, n;
+    int maxIterations, numParticles, n, logFrequency;
     double w = 0.7, c1 = 1.5, c2 = 1.5; // algorithm's parameters
     numParticles = argc > 2 ? atoi(argv[2]) : 30; // 30 is by default
     maxIterations = argc > 3 ? atoi(argv[3]) : 100; // 100 is by default
-    n = argc > 5 ? atoi(argv[5]) : 0;
+    logFrequency = argc > 5 ? atoi(argv[5]) : 0;
 
     map_t *map = mapLoad(argv[1]);
 
@@ -24,6 +24,7 @@ int main(int argc, char **argv) {
 
 
     FILE *fiParams =  fopen(argv[4], "r");
+    FILE *log = fopen("log.csv", "w");
 
     if (!fiParams) {
         printf("Didn't provide algorith's parameters, default ones are used\n");
@@ -36,14 +37,14 @@ int main(int argc, char **argv) {
 
 
     pso_params_t params = {w, c1, c2};
-    pso_t *pso = psoCreate(numParticles, maxIterations, params);
+    pso_t *pso = psoCreate(numParticles, maxIterations, logFrequency, params);
 
     if (!pso) {
         fprintf(stderr, "bad alloc at psoCreate, main\n");
         return 1;
     }
 
-    psoRun(pso, map);
+    psoRun(pso, map, log);
 
     printf("Best position found: (%.3f, %.3f) with value %.3f\n", pso->globalBestX, pso->globalBestY, pso->globalBestValue);
 

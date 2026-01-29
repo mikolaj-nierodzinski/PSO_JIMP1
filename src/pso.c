@@ -1,10 +1,11 @@
 #include "pso.h"
 #include "map.h"
+#include "logger.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
 
-pso_t *psoCreate(int numParticles, int maxIterations, pso_params_t params) {
+pso_t *psoCreate(int numParticles, int maxIterations, int logFrequency, pso_params_t params) {
     pso_t *pso = malloc(sizeof(pso_t));
     if (!pso) {
         fprintf(stderr, "bad alloc at pso, psoCreate\n");
@@ -17,6 +18,7 @@ pso_t *psoCreate(int numParticles, int maxIterations, pso_params_t params) {
     pso->globalBestX = 0.0;
     pso->globalBestY = 0.0;
     pso->globalBestValue = -1e9;
+    pso->logFrequency = logFrequency;
 
     pso->particles = malloc(numParticles * sizeof(particle_t));
     if (!pso->particles) {
@@ -44,7 +46,8 @@ void psoFree(pso_t *pso) {
     free(pso);
 }
 
-void psoRun(pso_t *pso, const map_t *map) {
+void psoRun(pso_t *pso, const map_t *map, FILE *log) {
+
     for (int i = 0; i < pso->numParticles; i++) {
         particle_t *p = &pso->particles[i];
 
@@ -67,6 +70,9 @@ void psoRun(pso_t *pso, const map_t *map) {
 
 
     for (int iter = 0; iter < pso->maxIterations; iter++) {
+	if(pso->logFrequency!=0){
+		if(iter%pso->logFrequency==0)loggerSep(iter, log);
+	}
         for (int i = 0; i < pso->numParticles; i++) {
             particle_t *p = &pso->particles[i];
             pso_params_t params = pso->params;
@@ -99,6 +105,10 @@ void psoRun(pso_t *pso, const map_t *map) {
                 p->bestX = p->x;
                 p->bestY = p->y;
             }
+	    //log position of particle i
+	    if(pso->logFrequency!=0){
+	    	if(iter%pso->logFrequency==0)loggerLog(i, p->x, p->y, log);
+	    }
         }
 
         // update global best
